@@ -1,0 +1,133 @@
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts, amsmath, amssymb}
+\usepackage{dcolumn, multirow}
+\usepackage{epsfig, graphicx}
+\usepackage{tabularx}
+\usepackage{anysize, indentfirst}
+\usepackage{verbatim, rotating}
+\usepackage{latexsym}
+%\usepackage{amsthm}
+\usepackage{fullpage}
+\usepackage{longtable}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{mathabx}
+%\usepackage{txfonts}
+\usepackage{stmaryrd}
+\usepackage{mathrsfs}
+%\usepackage{dsfont}
+\usepackage{comment}
+\usepackage{url}
+\usepackage{rotating}
+\usepackage{appendix}
+\usepackage{pdflscape}
+%\usepackage{float}
+\usepackage{etoolbox}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{lscape}
+%\usepackage{color}
+\usepackage{makecell}
+\usepackage{subcaption}
+\usepackage{booktabs,calc}
+\usepackage[capposition=top]{floatrow}
+%\BeforeBeginEnvironment{tabular}{\footnotesize}
+\usepackage{changepage}
+\usepackage{bbm}
+\usepackage{array}
+\usepackage{tabu}
+\floatplacement{table}{!htbp}
+\usepackage{adjustbox}
+\usepackage{cancel}
+\usepackage{stmaryrd}
+
+\usepackage{setspace}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{colortbl}
+
+\makeatletter
+\newcommand\primitiveinput[1]
+{\@@input #1 }
+\makeatother
+
+\newcolumntype{A}{>{\raggedright\arraybackslash}m{2.25cm}}
+\newcolumntype{K}{>{\raggedright\arraybackslash}m{3.5cm}}
+\newcolumntype{C}{>{\raggedright\arraybackslash}m{4.5cm}}
+\newcolumntype{E}{>{\raggedright\arraybackslash}m{5.5cm}}
+\newcolumntype{L}{>{\raggedright\arraybackslash}m{6.5cm}}
+\newcolumntype{I}{>{\raggedright\arraybackslash}m{7cm}}
+\newcolumntype{J}{>{\raggedright\arraybackslash}m{9cm}}
+
+
+\newcolumntype{B}{>{\centering\arraybackslash}m{1.25cm}}
+\newcolumntype{D}{>{\centering\arraybackslash}m{1.2cm}}
+\newcolumntype{F}{>{\centering\arraybackslash}m{2cm}}
+
+\definecolor{Gray}{gray}{0.85}
+
+\newcolumntype{G}{>{\columncolor{Gray}\centering\arraybackslash}m{1.2cm}}
+\newcolumntype{H}{>{\columncolor{Gray}\centering\arraybackslash}m{1.25cm}}
+
+\usepackage[bottom]{footmisc}
+
+% Abstract
+%------------
+
+\renewenvironment{abstract}
+ {\small
+  \begin{center}
+  \bfseries \abstractname\vspace{-.5em}\vspace{0pt}
+  \end{center}
+  \list{}{%
+    \setlength{\leftmargin}{3.8mm}%
+    \setlength{\rightmargin}{\leftmargin}%
+  }%
+  \item\relax}
+ {\endlist}
+
+ \newcommand{\specialcell}[2][c]{%
+  \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+
+  \newcommand{\specialLcell}[2][l]{%
+  \begin{tabular}[#1]{@{}l@{}}#2\end{tabular}}
+  
+  
+  
+% Appendices
+%----------------
+
+\usepackage{appendix}
+\usepackage{etoolbox}
+
+\AtBeginEnvironment{subappendices}{%
+  %\addtocontents{toc}{\protect\addvspace{10pt}Appendices}
+  \counterwithin{figure}{section}
+  \counterwithin{table}{section}
+}
+\makeatletter
+\patchcmd{\@chapter}{\protect\numberline{\thechapter}#1}
+{\@chapapp~\thechapter: #1}{}{}
+\makeatother
+
+
+ % Appendix TOC
+ %-------------------
+\usepackage{tocloft}
+		
+
+\usepackage{minitoc}
+\setlength{\ptcindent}{0em}
+\setcounter{parttocdepth}{2}
+
+\renewcommand \thepart{}
+\renewcommand \partname{}
+
+
+\setlength{\cftfignumwidth}{3em}  % Modify number width in LoF
+\setlength{\cfttabnumwidth}{3em}  % Modify number width in LoT
+
+\tightmtctrue
+\renewcommand\mtcgapbeforeheads{-3pt}
+
+  
+  

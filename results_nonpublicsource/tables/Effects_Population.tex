@@ -1,0 +1,24 @@
+\setlength\tabcolsep{2pt}
+\begin{table}[h!] \small \RawFloats
+\captionsetup{width=14.5cm}
+\caption{Communication centrality predicts political participation \\[-.75em]}\label{tab:wholecountry}
+\caption*{\small Predicted change in participation associated with moving from the 5th to the 95th percentile of each independent variable (or from zero to one, for indicators). Based on estimates of Equation \ref{eq:fullpopulation}; robust standard errors in parentheses. \\[-1.75em]}
+\begin{adjustwidth}{-0.5cm}{}
+\begin{center}
+\begin{tabu}{L  B B B B B B}
+\toprule
+%
+%
+&\multicolumn{3}{c}{Protest} &\multicolumn{3}{c}{Petition} \\
+%
+%
+& \multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}&\multicolumn{1}{c}{(5)}&\multicolumn{1}{c}{(6)} \\ \midrule
+\primitiveinput{../results/tables/Effects_Inside_Population.tex}
+\midrule
+Municipality FEs & & $\checkmark$ & $\checkmark$ & & $\checkmark$ & $\checkmark$ \\
+\bottomrule
+\end{tabu}
+%\caption*{ \scriptsize Standard errors in parentheses; p-values (for test of $\theta = 0$) in brackets. $^{\dagger}$Dependent variable is the death rate (deaths per 100,000 population), except in specification (5), in which it is the number of deaths of children under one year per 1,000 population. }
+\end{center}
+\end{adjustwidth}
+\end{table}

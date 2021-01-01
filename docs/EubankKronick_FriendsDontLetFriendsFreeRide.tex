@@ -1,0 +1,1124 @@
+
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%
+	%
+	%		NAMES:		NICK EUBANK &
+	%					DOROTHY KRONICK
+	%		DATE: 		May 31, 2019
+	%		PROJECT: 	Barrio networks
+	%
+	%		DETAILS: 	         Paper draft
+	%
+	%
+	%
+	%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+
+
+%------------------------------------------------------------------------------------------------------------
+% 	Packages
+%------------------------------------------------------------------------------------------------------------
+
+\providecommand{\pgfsyspdfmark}[3]{}
+
+\documentclass[12pt]{article}
+
+\input{Packages.tex}
+
+\newcommand{\StepCountInFileNames}{6}
+\newcommand{\StepCountInText}{5} % Our code has a step 1 we are treating as ``step 0'' in paper.
+
+
+
+
+
+
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+
+
+%------------------------------------------------------------------------------------------------------------
+%	Toggle journal formatting on/off
+%------------------------------------------------------------------------------------------------------------
+
+\newcommand{\jop}{0} % Set to 1 to use JOP formatting
+
+
+\if\jop1
+
+\setlength{\footnotesep}{1.1\baselineskip} %use 1.67\baselineskip for a double space
+
+\renewcommand{\footnotelayout}{\doublespacing} % set spacing in footnotes
+
+\usepackage[margin=.95in]{geometry}
+
+\fi
+
+\if\jop0
+
+\usepackage{parskip}
+
+\usepackage[right=3.5cm, left=3.5cm, top=3.5cm, bottom=3.5cm]{geometry}
+
+\fi
+
+
+
+% marginal notes
+%---------------------
+
+% use second command to disable, first command to display to-dos
+%\usepackage[colorinlistoftodos,textsize=tiny]{todonotes}
+%\setlength{\marginparwidth}{3cm}
+%\newcommand{\todone}[1]{\todo[,color=blue!20]{#1}}
+%\newcommand{\tododk}[1]{\todo[,color=red!20]{#1}}
+%\usepackage[disable]{todonotes}
+
+
+
+
+
+
+
+
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+
+
+%------------------------------------------------------------------------------------------------------------
+% 	Title page
+%------------------------------------------------------------------------------------------------------------
+
+
+\title{Friends Don't Let Friends Free Ride}
+% \date{August 13, 2020}
+
+
+\if\jop0
+
+\author{Nicholas Eubank\footnote{\scriptsize Duke Social Science Research Institute, \href{mailto:nick@nickeubank.com}{nick@nickeubank.com}}\: and Dorothy Kronick\footnote{\scriptsize Department of Political Science, University of Pennsylvania, \href{mailto:kronick@sas.upenn.edu}{kronick@sas.upenn.edu}}\footnote{\scriptsize We are grateful to \href{https://github.com/sbromberger}{Seth Bromberger} and to contributors to open source projects like Julia, LightGraphs, iGraph, and Python. For comments, we thank Guy Grossman, Yue Hou, Horacio Larreguy, Jenn Larson, Michele Margolis, John Marshall, Cyrus Samii, Zachary Steinert-Threlkeld, Dawn Teele, Stephanie Zonszein, Liz Zechmeister, and participants at the NYU Methods Workshop and NEWEPS. We also thank Vanderbilt University for generous access to server time. \scriptsize \textbf{Disclosure:} This work was made possible by a data-sharing agreement between the authors and a telecommunications firm. In exchange for access to the data, the authors provided training in coding and data analysis. At no time did the authors provide the company with any financial compensation, nor did the company provide the authors with any financial compensation.}}
+
+\fi
+
+
+
+
+
+
+
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+
+
+%------------------------------------------------------------------------------------------------------------
+% 	Begin document & abstract
+%------------------------------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle
+
+
+\vspace{1cm}
+\begin{abstract}
+\noindent Theory predicts that social sanctioning can solve the collective action problem, but only when people find out whether their peers participate. We evaluate this prediction using data from the near-universe of cell-phone subscribers in Venezuela. Those whose behavior is more easily observed by peers are much more likely to protest and much more likely to sign a political petition than otherwise similar people in less-visible social network positions. Together with qualitative and survey data, we interpret this finding as evidence that social network structure can facilitate (or frustrate) social sanctioning as a solution to the collective action problem.
+\end{abstract}
+
+\begin{center}
+Word count: 9,844
+\end{center}
+\thispagestyle{empty}
+
+
+% Need these commands to set up appendix Table of Contents
+%---------------------------------------------------------------------------------
+
+\doparttoc
+\dopartlof
+\dopartlot
+\faketableofcontents
+\fakelistoffigures
+\fakelistoftables
+
+
+
+\pagebreak
+
+
+
+
+
+
+
+
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+
+
+%------------------------------------------------------------------------------------------------------------
+% 	Introduction
+%------------------------------------------------------------------------------------------------------------
+
+
+\setcounter{page}{1}
+
+\if\jop1
+
+\linespread{2}\selectfont
+
+\fi
+
+Fifty-five years ago, Mancur Olson (\citeyear{OlsonBook}) posed an enduring question. Why do people protest, or lobby, or strike, or otherwise take part in collective action, given that doing so requires effort and risk, while everyone---participant and free-rider alike---reaps the spoils of victory?
+
+One influential explanation is that free riding is rarely free: those who sit out often suffer social sanction, while participants enjoy social rewards \citep{Ostrom:1990ws}. Indeed, a large experimental literature reveals that social influence affects whether people engage in collective political activities like signing petitions \citep{PalerPetition}, attending protests \citep{EnikopolovProtestExp}, and voting \citep{NickersonAPSR, Gerber:2008ks,Gerber:2016cs,Panagopoulos:2010kt}.
+
+Yet we know little about why certain communities are better able to wield this social influence, or why certain individuals are more susceptible to it.
+
+Theory points to an important role for \emph{information capital}: the ability to acquire and/or spread information \citep[][318]{JacksonTypology}. The idea is simple. Social influence can only solve the collective action problem if people find out whether others participate, which requires a social network conducive to information diffusion. This prediction---that information diffusion enables community enforcement---is central to influential theories of prosocial behavior \citep[][75]{Larson:2014ve, wolitzky2012, JacksonJEL}.
+
+If true, this prediction would provide considerable insight into the puzzle of collective political action. We would better understand why some communities mobilize easily while others flounder. But empirical tests have been limited. For one thing, social network structure is difficult to observe except in small villages \citep{Larson:2016uz,LarsonLewisPSRM,Eubank:2018,FerraliUganda} or online \citep{Larson2017,SteinertThrelkeld:2017dy}. For another, \emph{communication centrality}---\citeauthor{JacksonTypology}'s preferred measure of information capital---is computationally difficult to estimate (\citeyear{JacksonTypology}, 320). Perhaps most challenging of all is observing the outcome: who participates in collective political action.
+
+We address these challenges with original data from Venezuela. The data allow us to map the offline social network, estimate each person's communication centrality, and observe who participates in two forms of collective action: a petition, and a related protest. Using these data, we find that people with higher communication centrality are much more likely to sign the petition and much more likely to protest than otherwise similar people in less-visible social network positions. We then use features of the Venezuelan context to argue that the mechanism linking communication centrality to political participation is \emph{social influence}, i.e., peer sanctioning and reward. We conclude that people with high communication centrality are more susceptible to social influence, which enables their communities to enforce participation. Information capital distinguishes participants from free-riders.
+
+We map the structure of Venezuela's social network using data from the near-universe of cell-phone subscribers.\footnote{See \citet{EagleEtAl} on inferring social ties from cell-phone meta-data.} To measure \emph{communication centrality}, we introduce a simulation-based approximation; simple statistics such as number of immediate connections do not capture the speed of information diffusion \citep{Newman:2006wv,BanerjeeMicrofinance}.\footnote{Our approximation can be applied to any network data; we contributed the code to the open-source \texttt{LightGraphs.jl} library, and it is available \href{https://github.com/JuliaGraphs/LightGraphs.jl/blob/master/src/traversals/diffusion.jl}{\underline{here}}. Our own full implementation will be posted upon publication of this paper, and is available by request in the meantime.} We then observe two forms of political participation: whether each person signs a petition demanding a referendum on recalling Venezuelan President Nicol\'{a}s Maduro (based on a list of signatories), and whether each person participates in a protest aimed at convincing the government to honor the petition (based on cell phone location during the protest). These measures are behavioral, not self-reported.
+
+%
+We find that communication centrality is correlated with political participation: people with high levels of communication centrality are much more likely to participate---in the protest and in petition signing---than people with lower levels of communication centrality. This is true even when we compare participants to non-participants who vote at the same polling place, have the same party registration, are of the same gender and similar age, and have a similar level of geographic mobility. Within this matched sample, a one-standard-deviation increase in communication centrality predicts a \input{../results/effects_main_step_\StepCountInFileNames_petition_all_onestd.tex}\unskip-percentage-point increase in the probability of signing the petition. Placebo tests suggest that these relationships are not driven by unobserved characteristics that differ across participants and non-participants. Our analysis is descriptive, but we do compare participants with non-participants who are more observationally similar than the comparison sets used in previous descriptive work \citep{Larson:2016vk,SteinertThrelkeld:2017dy}.
+
+We then exploit features of the Venezuelan context---such as the fact that protests were organized publicly, rather than clandestinely---to argue that the mechanism linking communication centrality to political participation is \emph{social sanctioning}, rather than (e.g.) awareness \citep{Christensen:2018vd} or mirroring \citep{Siegel:2009vi,Rolfe:2012ka}.\footnote{We do not directly test models like \citet{Rolfe:2012ka} or \citet{Siegel:2009vi} because (to the best of our knowledge) doing so requires comparison across partitioned networks \citep[e.g.][]{Eubank:2018}, whereas we observe a single large network.} For example, using responses to original survey questions, we find that more than one third of respondents had friends or family members who weighed in on others' participation decisions.
+
+Our analysis of petition signing also reveals a risk of using protests in the study of social networks and political participation. The relationship between communication centrality and political participation is much stronger for protest attendance than for petition signing. Based in part on responses to original survey questions, we attribute this result to the fact that a protest is an inherently social activity, usually attended in the company of friends; thus, protesters might have higher communication centrality than non-protesters simply because they are more sociable. In other words, they might also be more likely to attend (say) dinner parties. This finding sounds a note of caution for related empirical work \citep[c.f.][]{Gonzalez2017, Larson:2016vk}: network position and protest participation might be correlated for reasons that have nothing to do with solving collective action problems.
+
+In addition to the networks literature cited above, our results contribute to literature on the role of social networks in Latin American politics. It has long been understood that social ties play an important role in mediating access to excludable benefits \citep{CalvoMurillo,BrokersVoters}, screening prospective clients \citep{Auyero2000, UjhelyiCalvo}, and voter coordination \citep{AriasAPSR}; we build on these insights in studying the relationship between social networks and protest. Our focus on network structure complements recent work highlighting ``how much is at stake'' in a given protest or election \citep[][38--39]{AytacStokes}: social networks that enable peer sanctioning will amplify the effects of event characteristics that spark widespread participation.
+
+Overall, we provide (to the best of our knowledge) the first quantitative empirical evidence in favor of theories such as \citet{Larson:2014ve} and \citet{JacksonJEL}: social networks conducive to information diffusion can help solve the collective action problem. Even compared to others in the same small neighborhood, of the same political persuasion, and of the same age and gender, Venezuelans more exposed to peer pressure were less likely to free ride on their compatriots' costly actions against an increasingly authoritarian regime.
+
+
+
+
+
+
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+
+
+%------------------------------------------------------------------------------------------------------------
+% 	Context
+%------------------------------------------------------------------------------------------------------------
+
+
+
+\section{Context: Collective Action in Venezuela}\label{sec:context}
+
+In the two years after Nicol\'{a}s Maduro took office as president of Venezuela in April of 2013, the country suffered the worst recession in its recorded history \citep{kronick2015}.\footnote{Since then, the recession has become the worst in recorded Latin American history.} Maduro's approval ratings dipped below 25\% \citep{datanalisis2016}, and, in April of 2016, a coalition of opposition parties decided to collect signatures in support of holding a recall referendum: a national yes-or-no vote on whether to recall Maduro from office. Under the Venezuelan constitution, written during the presidency of Maduro's predecessor and mentor Hugo Ch\'{a}vez, the signatures of 1\% of registered voters would suffice to begin the recall referendum process.\footnote{Technically, it is an electoral regulation (not the Constitution) that requires the signatures of 1\% of registered voters to begin the process. The regulation specifies that, with signatures of 1\% of the electorate in hand, the Electoral Council would supervise the collection of signatures of the 20\% of the electorate required by the Constitution in order to hold the recall vote.}
+
+The coalition of opposition parties set up petition-signing stations throughout the country, where registered voters could add their signatures and thumbprints to the petition \citep[see][for photos and a description]{PetitionNoticia}. The stations were open for two days (April 27 and April 28, 2016); on May 2, opposition leaders announced that they had collected and submitted to the National Electoral Council 1.8 million signatures---nearly ten times the required 1\% \citep{toro2016}.
+
+The Electoral Council claimed that the signatures were not valid. In the view of economist Francisco Rodr\'{i}guez, ``There was just nothing even resembling a normally coherent argument about why it was that the referendum was stopped. The government alleges that there was fraud in the collection of signatures, but $\ldots$ there were enough signatures, even excluding the presumed fraudulent signatures, to get the process to go forward. But nevertheless the government stopped it'' (\citeyear{frod2017}).
+
+Opposition leaders responded by calling for a large demonstration, the \emph{Toma de Caracas} (``taking of Caracas''), and they scheduled it for September 1. The time and location of the march were publicized on Twitter and in major media outlets, and the march itself was covered in the national and international press. The protest organizers claimed that more than one million people participated in the march; an independent measure based on photographs estimated participation at 700,000 \citep{FRod2016}.
+
+We use (a) signing of the recall referendum petition and (b) presence at the \emph{Toma de Caracas} as our measures of participation in collective political action. (See Section \ref{sec:measurement} for measurement details.) Both were costly activities subject to the collective action problem. In addition to the time and transportation costs required to sign the petition, signatories had reason to fear retribution: signatories of an earlier, similar petition had been subsequently discriminated against in the labor market \citep{Maisanta} and in applications for government benefits \citep{AlbertusMaisanta}. Likewise, in addition to the time and transportation costs required to attend the protest, participants had reason to fear violence: though not common, participants in earlier protests had suffered injuries, arrest, torture, and even fatalities \citep{Toro2014}.
+
+
+
+
+
+
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+
+
+%------------------------------------------------------------------------------------------------------------
+% 	Lit review
+%------------------------------------------------------------------------------------------------------------
+
+
+\section{Theory: Networks and Political Participation}\label{sec:literature}
+
+The free-rider problem plagues protests, petitions, and and other collective political activities: why spend time (and risk reprisals) participating when you could instead stay home and still benefit from any political gains?
+
+One answer is social sanctioning. A community agreement to shun, chastise, or otherwise punish shirkers provides powerful incentives against free-riding \citep{Ostrom:1990ws,Kandori:1992fk,Fearon:2007wp}. Likewise, social recognition of people who do ``do their civic duty'' increases the returns to participation \citep{Sinclair:2012tq}.
+
+\citet[][75]{JacksonJEL} explain why information diffusion underpins any system of community enforcement:
+
+\linespread{1}\selectfont
+\begingroup
+\addtolength\leftmargini{-0.1in}
+\begin{quote}
+ If friends and neighbors are made quickly aware of the individual's behavior, then they can react quickly. This is important for providing the right incentives, as the threat of a punishment in the near future will have the greatest scope for disciplining behavior. If instead, the setting is such that it takes a long time for one's friends to learn of misbehavior then it becomes difficult to provide incentives for individuals to behave according to some desired social norm.
+\end{quote}
+\linespread{1.1}\selectfont
+
+
+\if\jop1
+\linespread{2}\selectfont
+\fi
+
+Theorists have formalized this intuition. \citet{Larson:2014ve}, for example, presents a model in which the threat of collective sanction of defectors sustains cooperation in one-shot bilateral prisoner's dilemma games (played between random pairs of individuals) \citep[\`{a} la][]{Kandori:1992fk}. In the equilibrium of interest, cooperation can be sustained only among individuals whose network positions ensure that, if they defect, word will spread quickly enough to ensure a credible threat of sanction by future partners. This excludes people in isolated network positions, for whom the threat of collective sanction is weak.\footnote{A similar dynamic emerges in a repeated public goods game in \citet{wolitzky2012}.}
+
+These theories yield clear comparative statics: people in more visible network positions---that is, network positions that facilitate the spread of information about them---are more likely to participate, because they face stronger potential social sanction for staying home.
+
+Of course, information diffusion might enable collective action through means other than social sanctioning. Most obviously, it might increase awareness of a protest or other political activity, or it might facilitate coordination among protest organizers evading government disruption \citep{Little:2015jo,Christensen:2018vd,EnikopolovVK}. In our context, however, organizers were not forced to promote events solely via private social networks; on the contrary, the petition signature drive and the \emph{Toma de Caracas} protest were announced on social media and covered extensively in major press outlets. Private coordination through social networks therefore did not play the essential logistical role that it played in, for example, Arab Spring protests \citep{SteinertThrelkeld:2017dy,SteinertThrelkeld:2015vu}. The very public nature of these activities motivates our focus on social sanctioning (or social approbation) as the mechanism of interest.
+
+Similarly, the presence of (at the time) reliable public opinion polls motivates our choice to focus on free riding rather than preference falsification as the impediment to collective action. Preference falsification can generate the distorted impression of widespread support for the regime, which then hinders protest participation \citep{Kuran:2010tz,SteinertThrelkeld:2018wz,Little:2015jo}.\footnote{If we were to focus on preference falsification, we would have used a different network model to motivate our analysis, such as complex contagion \citep{Centola:2018dc,Centola:2007kk} or social context \citep{Siegel:2009vi}. In these models, participation snowballs: individuals choose to protest as they observe peers protesting, because these observations lead them to update about the level of support for the government in the population. Our focus instead on free riding motivates our choice of \citet{Larson:2014ve} and \citet{wolitzky2012} as theoretical foundations for the analysis.} But in Venezuela, media outlets regularly reported the president's unpopularity: in the summer of 2016, just before the \emph{Toma de Caracas} protest, major pollsters placed Maduro's approval ratings between 22\% and 31\%. There was no public perception of widespread support for the government.
+
+
+We do not seek to study the direct influence of one person's observed or expected participation on her friends' participation decisions \citep[as in, e.g.,][]{Rolfe:2012ka,Siegel:2009vi,Banerjee:2014kl,Eubank:2018,FerraliUganda,CantoniHongKong}. Rather, our interest lies in how social network structure ``determines the forms of cooperative behavior that can be maintained'' \citep[][5]{JacksonJEL} by shaping the \emph{anticipated} social cost of non-participation---which exists even (or especially) when sanctioning never actually occurs in equilibrium. Our empirical analysis is thus more in line with \citet[][1882--1883]{JacksonAER} or \citet{Larson:2016vk}, both of which compare the network positions of cooperative and non-cooperative agents.
+
+
+
+
+
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+
+
+%------------------------------------------------------------------------------------------------------------
+% 	Measuring information diffusion
+%------------------------------------------------------------------------------------------------------------
+
+
+\section{Data: Communication Centrality and Participation}\label{sec:measurement}
+
+The theories summarized in Section \ref{sec:literature} predict that, all else equal, people with higher communication centrality are more susceptible to peer pressure and therefore more likely to participate in collective action. To study this prediction empirically, we implement a measure of communication centrality---or, in other words, a measure of how quickly information about a person diffuses through her social network.
+
+\subsection{Mapping the Social Network}
+
+We first map the social network through which information diffuses, using cell-phone meta-data from a Venezuelan telecommunications company (``Partner Telecom'').\footnote{The telecommunications company requested anonymity.}
+
+The data include records of all SMS (text) and voice transactions sent or received by subscribers of the Partner Telecom from June 2016 to February 2017, totaling approximately 30 billion transactions. Because we observe transactions sent \emph{or} received by Partner Telecom subscribers, our data include information about other providers' clients, too. Each record includes type (voice or text), identifiers for both caller and receiver, date and time, duration, and GPS coordinates of the antenna tower through which all calls were placed (we do not observe antenna towers for text messages).\footnote{All identified data is stored on a computer with no physical means of connecting to the internet (an air-gapped computer), in an access-controlled room, on encrypted hard drives; the data protection protocols were approved by two Institutional Review Boards.}
+
+Within this data, we classify two users as \emph{connected} if they (a) call each other at least twice \emph{or} text each other at least twelve times\footnote{This reflects the fact that messages are about six times more common than voice calls.} in (b) at least two of the eight months in our data. Results are similar using call thresholds of four voice calls or twenty-four texts and six voice calls or thirty-six texts. In our baseline specification, our network has about 27 million individual subscribers (vertices in the network), the median person has nine immediate connections, and the average person has 9.3 immediate connections.
+
+In principle, we could use call frequency to measure the strength of ties (rather than the mere presence of a tie). In practice, we would not trust this measure. First, it is unclear whether call frequency is strongly correlated with the social importance of a relationship. Second, phone calls are only one of several modes of communication. Even if overall communication frequency were indicative of social importance, weighting by \emph{call} frequency may under-estimate the importance of relationships among individuals who live nearby and primarily communicate face-to-face---or those who communicate via email or WhatsApp.\footnote{WhatApp looks like data usage to telecommunications firms, so our data excludes it.} See Appendix~\ref{appendix_thresholding} for additional discussion.
+
+Our mapping of the social network is imperfect. First, while we do observe communication between Partner Telecom subscribers and those using other providers, we do not observe connections among pairs of users when neither is a Partner Telecom subscriber. (To preserve anonymity, we cannot report their market share.) Second, our data may generate false positives: a person might make many calls to a local business, for example, without being socially connected to that business (though we do filter out one-off business calls by requiring connections in at least two of our eight months of data, and we filter out very large businesses by dropping the 1\% of users with the most connections).
+Likewise, we cannot avoid false negatives even among Partner Telecom subscribers; family members or others who see each other daily may rarely call or text.
+
+In our view, the advantages of our data outweigh these drawbacks. Many studies map social networks by asking people for the names of their closest friends  \cite[e.g.][]{Larson:2016uz,Banerjee:2014kl,Rojo:2014vw,Fafchamps:2013tg,Dionne:2014ga}. Our data provide more breadth: in our primary specification, we observe 27 million unique phone lines, or the near universe of lines in the country.\footnote{The Venezuelan population was approximately 31 million in 2016; the World Bank estimates 93 cell lines per 100 people.} Our data also provide more depth, capturing even weak social ties that may be censored when people are asked to list a finite number (often five) of their closest friends---weak ties that have been found to be important \citep{Granovetter:1973bk}. Third, our data measure actual, non-public, offline communication patterns. They therefore reveal connections that might be under-reported in surveys or absent online, like inter-class or inter-party ties.
+
+These advantages have led economists and computer scientists to use cell-phone meta-data for studying phenomena like migration and mobility \citep{Anonymous:I3oZTQ6n,Wesolowski:2012jh}, socio-economic status \citep{Blumenstock:2015hq}, the geography of network communities \citep{Blondel:2010ip,Barthelemy:2011dq}, and knowledge diffusion \citep{Bjorkegren:2015iy}. To the best of our knowledge, we are the first to use cell-phone meta-data to study political participation.
+
+\subsection{Measuring Communication Centrality}\label{sec:larsonmeasure}
+
+With this mapping of the social network in place, we measure a person's communication centrality by simulating an information diffusion process. Simulation is required because of the intractability of analytically accounting for ``all the possible paths that information might take, and some end up overlapping, producing correlation in the chance that information makes it from one node to another'' \citep[][8]{JacksonTypology}.
+
+For each individual $i$, we simulate a diffusion process starting at $i$ and record the number of $i$'s peers who are reached (that is, informed) by the diffusion process at each time $t$.\footnote{In some theoretical models, information about a person \emph{not} participating would have to spread without her help---i.e., in the network $g\backslash i$---while she might help spread information if she \emph{did} participate. We abstract away from this distinction, allowing the information diffusion process to begin at person $i$ whether or not she participated. In our view, it is plausible that a person's peers could learn about her non-participation directly from her (for example, by asking, or indirectly through general awareness of a friend's schedule).} The simulation proceeds as follows:
+
+
+\begin{enumerate}
+\item At time $t=0$, the subject vertex $v_i$ is endowed with a unique piece of knowledge. In other words, she is \emph{informed}. All other vertices are ignorant. Letting $\mathbb{I}_{i, t}$ denote the set of vertices who have been informed by time $t$ in a diffusion process beginning at $v_i$, this implies that $\mathbb{I}_{i,0} = \{v_i\}$.
+\item At time $t=1$, information spreads to each neighbor of $v_i$ with probability $p / log(degree(v_i)+1)  \in(0,1)$. Our decision to normalize the probability of diffusion by the log of $i$'s number of neighbors---that is, by $log(degree(v_i)+1)$ ---is motivated by an empirical regularity: people with more friends do make more calls overall than users with fewer friends, but this increase in sub-linear in the number of friends \citep{Miritello:2013bl}, likely due to time constraints \citep[see also][]{Larson:2016uz}.\footnote{Results are similar when we normalize by $degree(v)$ rather than $log(degree(v)+1)$.}
+\item From each vertex $v_j$ informed at $t=1$ (that is, from each $v_j \in \mathbb{I}_{i,1}$), the information spreads to $v_j$'s neighbors with probability $p / log(degree(v_j)+1)$ in $t=2$,  creating a new set of informed vertices $\mathbb{I}_{i,2}$.
+\item For each subsequent time period $t$, information spreads from each informed vertex $v_j \in \mathbb{I}_{t-1}$ to each of $v_j$'s neighbors with probability $p / log(degree(v_j)+1)$, creating  a new set of informed vertices $\mathbb{I}_{i,t}$.
+\end{enumerate}
+
+We run this simulation 1,000 times for each person (vertex) in our samples of interest (described below). Averaging over the 1,000 simulations, we create two measures:
+\if\jop1
+\linespread{1}\selectfont
+\fi
+\begin{align*}
+\text{Communication centrality: } & N_{i,t}^g \equiv |\mathbb{I}_{i,t}| \\
+\text{Exposure to participants: } & N_{i,t}^p \equiv |\mathbb{I}_{i,t}| \cap \mathbb{P}, \\[-.5em] & \qquad \quad \text{where $\mathbb{P}$ is the set of participants}
+\end{align*}
+\if\jop1
+\linespread{2}\selectfont
+\fi
+In other words, the \emph{communication centrality} of person $i$ at time $t$ ($N_{i,t}^g$) is the number of people informed about her behavior up to and including time $t$; her \emph{exposure to participants} is the number of other \emph{participants} (people who signed the petition or attended the protest) informed about $i$'s behavior up to and including time $t$.
+
+A key feature of communication centrality is that it captures the number of participants \emph{and} non-participants reached by the diffusion process. If we only observed information diffusion to other participants, our results would be much more difficult to interpret. As we discuss in more detail below, any correlation between participation and \emph{exposure to participants} could simply reflect political homophily: a tendency to associate with others who share a preference for (e.g.) attending protests. Communication centrality is instead a pure measure of network structure that does not consider whether or not the people reached by the diffusion process are political participants. Without it, we would not be able to rule out the possibility that what looks like social influence is in fact a shared preference for political participation. On the other hand, in light of theories suggesting that only participants have the moral authority to reward fellow participants or sanction free-riders, we also consider \emph{exposure to participants} below.
+
+No simple statistic---such as average degree or average shortest path length---captures the speed of information diffusion through a network \citep{Newman:2006wv}. Moreover, the relationship between information diffusion and proxies for network structure in the literature---such as membership in civic organizations or self-reported number of friends---is generally unknowable.
+
+Appendix Table \ref{tab:correlations} reveals that communication centrality is highly correlated with but not identical to \emph{eigenvector centrality}, a common measure that calculates the centrality of a node as the (scaled) sum of the centrality of its neighbors \citep[][41]{JacksonBook}. To the best of our knowledge, this correlation has not been estimated before. If the correlation we observe ($\approx0.7$) were replicated in other data sets, analysis of eigenvector centrality would take on new social and political interpretations. Conversely, a low correlation in other network data sets would underscore the need for careful consideration of when to use communication centrality (which is more computationally demanding) and when to use eigenvector centrality (among other possible choices).\footnote{Appendix Table \ref{tab:correlations} also reports the correlations between network centrality at one time step and network centrality at other time steps; we return to this below.}
+
+
+\subsection{Measuring Political Participation}\label{sec:measureprotest}
+
+Measuring petition signing is straightforward. The (identified) list of 1.7 million signatories was circulated; we merge the list (on national I.D.\ number) with our measures of communication centrality.
+
+To measure protest activity, we classify as a \emph{protester} any cell-phone subscriber with at least one call routed through a cell tower along the protest route during the time of the protest---except those who live or work nearby. Specifically, we exclude from the sample those who live or work in parishes adjacent to the protest route (parish is a sub-county administrative unit). We do this in order to reduce the incidence of false positives: the imprecision of cell-tower-based geolocation prevents us from distinguishing \emph{presence at the protest} from \emph{presence at a nearby home or business}. The data identify approximately 160,000 Partner Telecom subscribers who place a call in the vicinity of the protest during protest hours on September 1; when we drop those who live or work in parishes adjacent to the protest route, we are left with a sample of approximately 44,000 protesters.\footnote{That we observe only 160,000 of the approximately 700,000 (estimated) protesters at the \emph{Toma de Caracas} makes sense given (a) the fact that we only have cell-tower data for subscribers of our Partner Telecom, and (b) the fact that we only have cell-tower-routing data for phone calls, not for text messages.}
+
+The use of two distinct \emph{behaviorial} measures of political participation constitutes one of our contributions. First, behavioral measures allow us to avoid the desirability bias inherent in self-reported political participation---bias that could be stronger if social pressure indeed drives participation. Second, observing two different forms of participation (protest and petition signing) ensures that our results are not driven by specific features of one type of participation (like the fact that people often attend protests in groups). We discuss this advantage in detail below.
+
+\subsection{Matching participants to similar non-participants}\label{sec:matching}
+
+The theoretical results summarized in Section \ref{sec:literature} imply that, in equilibrium, people with greater communication centrality should be more likely to participate than otherwise identical people who are less exposed. The ``otherwise identical people'' part of these models poses an empirical challenge. In theoretical work, network position and other characteristics---like socioeconomic status---are assumed to be independent. In reality, they are correlated. We partially address this challenge by matching on observables.
+
+For each protester in a random sample of $5,000$ protesters, we identify a non-protester who is (a) registered to vote at the same polling place, (b) of the same political party, (c) likely to spend a similar amount of time in Caracas in a given month (excluding the protest day), (d) of the same gender, (e) on the same type of cell-phone plan (pre- or post-paid), (f) of a similar age, and (g) of a similar level of geographic mobility (as measured by the spatial variance, across days, of her cell phone).\footnote{For details, see Appendix~\ref{appendix_matching}. Results are similar when we also match on average user call frequency. } Matching on polling place is perhaps the most important: polling places are small and neighborhoods are highly segregated (by class), so comparing people within polling place increases the likelihood of similarity along many dimensions. Relative to other studies of social network and political protests, we match participants and non-participants on a rich set of observable characteristics.\footnote{\cite{Larson:2016vk}, for example, compared Twitter users who tweeted from the location of the Charlie Hebdo protests using a related hashtag to users who used related hashtags within Paris but at least 5km from the protest site. This strategy matched subjects on political interest and ability to attend, but not on socio-economic status or other characteristics.}
+
+
+
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+
+
+%------------------------------------------------------------------------------------------------------------
+% 	Individual-level results
+%------------------------------------------------------------------------------------------------------------
+
+\if\jop1
+\linespread{1}\selectfont
+\fi
+\section{Results: Communication Centrality and Political Participation}\label{sec:results}
+\if\jop1
+\linespread{2}\selectfont
+\fi
+
+% General population
+%--------------------------
+
+Descriptively, how does communication centrality relate to socio-economic characteristics and to political participation? We study these correlations using a representative sample of individuals from six large Venezuelan states. For these six states, we obtained census-tract maps that allow us to link neighborhood characteristics (like education) to electoral precincts (and thus to the voters in our data).\footnote{The six states are Aragua, Carabobo, the Federal District, Lara, Miranda, and Vargas.} We re-weight the sample so that it resembles the overall Venezuelan population.
+
+Communication centrality is weakly correlated with (neighborhood-level) poverty and education, but it is strongly correlated with both forms of political participation. Appendix Figure \ref{fig:descriptives} graphs the nonparametric bivariate relationships. To investigate how the (descriptive) relationship between communication centrality and participation changes when we account for other factors, we estimate:
+\if\jop1
+\vspace{-.5cm}
+\fi
+\begin{align}\label{eq:fullpopulation}
+\text{Participate}_i = \gamma_0 + \gamma_1 N_{i,\StepCountInText}^a + \boldsymbol{\gamma_2} \boldsymbol{X_i} +  \eta_i
+\end{align}
+\if\jop1
+\vspace{-1.5cm}
+\fi
+
+\noindent where $N_{i,\StepCountInText}^a$ is communication centrality at $t=5$, and $\boldsymbol{X_i}$ includes (a) municipality fixed effects, (b) whether person $i$ is registered with the United Socialist Party of Venezuela (PSUV, the party of the government), (c) the proportion of adults (over 25) in the neighborhood who have a college degree; and (d) the proportion of households in the neighborhood with a cement floor.
+
+	% Table for population results
+	%-------------------------------------
+
+\if\jop1
+\linespread{1.1}\selectfont
+\fi
+\input{../results/tables/Effects_Population.tex}
+\if\jop1
+\linespread{2}\selectfont
+\fi
+
+	%-------------------------------------
+
+
+Table \ref{tab:wholecountry} reveals that communication centrality predicts larger changes in protest participation than does party registration or neighborhood socioeconomic characteristics (Columns 1--3; coefficients are scaled so as to capture the predicted change in participation associated with moving from the 5th to the 95th percentile of the independent variable). Communication centrality is also highly predictive of signing the petition. Moving from the 5th to the 95th percentile of communication centrality predicts a 4.5-percentage-point increase in the probability of signing the petition---about half of the difference associated with moving from the 5th to the 95th percentile of neighborhood education \citep[c.f.][]{boothseligson2006}.
+
+
+
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+
+
+%------------------------------------------------------------------------------------------------------------
+% 	Individual-level results
+%------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+% Graphical analysis
+%--------------------------
+
+\subsection{Political participation also increases with communication centrality}\label{sec:t2}
+
+These correlations are suggestive, but we can learn more by comparing the communication centrality of participants to that of observationally similar non-parti\-cipants. The analysis in this section describes variation \emph{within} matched pairs (Section \ref{sec:matching}), asking whether protesters and/or petition signers have higher or lower communication centrality than non-participants who share the same polling place, party registration, travel habits, and age group, among other characteristics (see Section \ref{sec:matching} above for details). We use $\overline{N_{pair}}$ to denote the within-pair mean of communication centrality, such that $N_{i}-\overline{N_{pair}}$ denotes person $i$'s deviation from the within-pair mean of communication centrality. Except where otherwise noted, we use communication centrality measured at time step $t=\StepCountInText$; results for other time steps are similar.\footnote{In principle, it would be interesting to compare the effects of exposure at different time steps: does exposure at $t=2$ matter more than exposure at $t=5$? How much more? In practice, exposure is too highly correlated across time steps to allow us to make these distinctions, as Appendix Table \ref{tab:correlations} reveals.}
+
+Figure \ref{fig:individualdata} plots the probability of protest participation and of petition signing against deviations from the within-pair mean of communication centrality,  $N_{i,\StepCountInText}^g-\overline{N_{pair,\StepCountInText}^g}$. Even within matched pairs, the probability of political participation increases with communication centrality, consistent with the notion that communication centrality facilitates social sanctioning and thereby encourages protest participation. Petition signing rates also increase with communication centrality with pairs, though more slowly; we interpret the differences in Section \ref{sec:survey} below.
+
+	% FIGURE: Individual level results
+	%-------------------------------------------
+
+	\if\jop1
+	\linespread{1}\selectfont
+	\fi
+
+	\begin{figure}[t] \RawFloats
+	\centering
+	\caption{Communication centrality predicts political participation \\[-.5em]}\label{fig:individualdata}
+	\caption*{\selectfont \small{\emph{Fig.\ (a) plots the probability that a person protests given her deviation from the within-matched-pair mean of communication centrality ($N_{i,\StepCountInText}-\overline{N_{pair,\StepCountInText}}$). Figure (b) plots the probability that a person signs the recall referendum petition conditional on her deviation from the within-pair mean of communication centrality.}} \\[-1.7em]}
+       %
+       %
+	\begin{subfigure}[t]{0.45\textwidth}
+	\caption{\footnotesize{\specialcell{Protest participation \\ and communication centrality}}}\label{fig:protest}
+	\hspace{-1.25cm} \rotatebox{90}{\hspace{1.2cm}  \footnotesize{\textsf{Pr(Participation)}}}
+	\includegraphics[width=1.1\textwidth, trim=1.1cm .25cm 0cm .7cm, clip=true]{../results/binnedscatters/sept1_ln_step_\StepCountInFileNames_reachall.pdf} \\[-1.1em]
+	\caption*{\footnotesize{\specialcell{\textsf{Deviation from within-pair mean of} \\[-.25em] \textsf{communication centrality at $t=\StepCountInText$}}}}%
+	\end{subfigure} %
+       %
+       %
+        ~  \hspace{0cm}
+	\begin{subfigure}[t]{0.45\textwidth}
+	\caption{\footnotesize{\specialcell{Petition signing \\ and communication centrality}} }\label{fig:petition}
+	\includegraphics[width=1.1\textwidth, trim=1.1cm .25cm 0cm .7cm, clip=true]{../results/binnedscatters/petition_ln_step_\StepCountInFileNames_reachall.pdf} \\[-1.1em]
+	\caption*{\footnotesize{\specialcell{\textsf{Deviation from within-pair mean of} \\[-.25em] \textsf{communication centrality at $t=\StepCountInText$}}}}%
+         \end{subfigure} \\[-0.25em]
+	%
+	%
+        \caption*{\scriptsize{Lines shows fitted values (and 95\% C.I.s) from local linear regression using a Gaussian kernel with the rule-of-thumb bandwidth from \citet{FanGijbels}, 110--113. The regression is fit to the raw (unbinned) data. The points mark mean participation rates in bins of 2.4 percentiles (40 equally sized bins). For visual clarity, we exclude the top and bottom 2\% (we do not trim the sample when estimating Equation \ref{eq:neweqn}).} \\[-1.6em]}
+\end{figure}
+
+
+	\if\jop1
+	\linespread{2}\selectfont
+	\fi
+
+	%---------------------------
+%\linespread{1.1}\selectfont
+
+
+
+% Linear regression
+%-------------------------
+
+Figure~\ref{fig:individualdata} reveals that the within-pair nonparametric relationship between communication centrality and political participation is close to linear. With this in mind, we estimate:
+\if\jop1
+\vspace{-.5cm}
+\fi
+\begin{align}\label{eq:neweqn}
+\text{Participate}_{ip} & = \gamma_{p} + \beta N_{ip,\StepCountInText} + \epsilon_{ip}
+\end{align}
+\if\jop1
+\vspace{-1.5cm}
+\fi
+
+\noindent where $\text{Participate}_i$ is an indicator for whether person $i$ in pair $p$ participates (in the protest, in signing the petition, or in a placebo outcome, as indicated in each table); $\gamma_{p}$ are fixed effects for each pair $p$, $N_{ip,\StepCountInText}$ is the communication centrality of person $i$ in pair $p$ at $t=\StepCountInText$;\footnote{As noted above, results are similar for other time steps.%appendix
+} and $\epsilon_{ip}$ is a person-specific shock term. This specification thus exploits \emph{within-matched-pair} variation in communication centrality \citep[][]{MummoloPeterson}.
+
+
+	%---------------------------
+
+
+	% Main results table
+	%------------------------
+
+	\if\jop1
+	\linespread{1}\selectfont
+	\fi
+
+	\input{../results/tables/Effects_Main.tex}
+
+	\if\jop1
+	\linespread{2}\selectfont
+	\fi
+
+	%------------------------
+
+Table \ref{tab:effects} reports the estimates of Equation \ref{eq:neweqn}. A one-standard-deviation increase in within-pair communication centrality predicts a \input{../results/effects_main_step_\StepCountInFileNames_sept1_all_onestd}\unskip-percentage-point increase in protest participation, while a one-standard-deviation increase in within-pair communication centralitys predicts a \input{../results/effects_main_step_\StepCountInFileNames_petition_all_onestd}\unskip-percentage-point increase in the probability of signing the petition. Again, these correlations are consistent with the idea that communication centrality facilitates social sanctioning as a solution to the collective action problem.
+% Homophily
+%---------------
+
+One obvious concern is that the estimates in Table \ref{tab:effects} might capture the effect of some unobserved characteristic that remains unbalanced across the two groups (and that is correlated with communication centrality). For example, though we match on observables correlated with socio-economic status (like neighborhood of residence), it might nevertheless be the case that protesters and petition-signers are richer or better educated than their matched non-participant counterparts.
+
+To evaluate this possibility, we repeat our analysis with a placebo outcome that should be associated with socioeconomic status but not (necessarily) with communication centrality: presence in the area of Caracas where the protest took place, but on non-protest days (placebo dates). People who travel to Caracas for work or pleasure likely have more resources than those who do not. If our matching strategy failed to produce balance on socioeconomic status, we would expect ``placebo protesters'' (people making calls from the protest area on non-protest days) to have higher communication centrality than observationally similar people not traveling to Caracas.
+
+To conduct this analysis, we first draw new samples of placebo protesters: people making calls from the protest area on eight non-protest Thursdays (the protest took place on a Thursday). For each placebo protester, we find an observationally similar person who was \emph{not} in Caracas on that day, using the same matching strategy described in Section \ref{sec:matching} above. We then measure communication centrality for placebo participants and non-participants, and estimate Equation \ref{eq:neweqn} using this new matched sample.
+
+
+	% Placebo dates table
+	%----------------------------
+
+	\if\jop1
+	\linespread{1}\selectfont
+	\fi
+
+	\input{../results/tables/Effects_SES.tex}
+
+	\if\jop1
+	\linespread{2}\selectfont
+	\vspace{-0.5cm}
+	\fi
+
+	%----------------------------
+
+If our matching strategy failed to capture important dimensions of socioeconomic status, we would expect people who travel to the protest area in Caracas on \emph{any} date to have higher communication centrality than their matched counterparts. Instead, as the estimates in Table \ref{tab:ses} reveal, communication centrality is much less predictive of the placebo outcome than it is of protest participation. One one-standard-deviation increase in communication centrality predicts a \input{../results/placebo_avg_step_\StepCountInFileNames_all_onestd.tex}\unskip-percentage-point increase in the probability of presence in Caracas on placebo dates (compared to \input{../results/effects_main_step_\StepCountInFileNames_sept1_all_onestd.tex}percentage points for actual protest participation).\footnote{In principle, we could conduct an analogous placebo-day analysis using exposure to participants (``number of participants informed in the information diffusion process''), rather than communication centrality. In practice, though, we would not expect these placebo-day estimates to be zero: assuming some homophilic tendency among people who travel to downtown Caracas on a given day, exposure to ``participants'' (scare quotes indicating placebo-day participants) \emph{should} predict ``participation.''}
+
+
+
+% Homophily
+%--------------
+
+\subsection{Participation increases with exposure to \emph{participants}}\label{sec:participantexposure}
+
+One concern with the analysis thus far is that we have focused on communication centrality, or the total number of peers who are likely to hear about a person's behavior, whereas (in theory) only \emph{participants} have the authority to sanction non-participation. Who are shirkers to criticize shirkers?
+
+In this section, we show that the results are robust to focusing instead on exposure \emph{to participants}---that is, the number of protest attendees or petition signers likely to hear about a person's behavior.
+
+Table~\ref{tab:participant} shows the relationship between participation and \emph{exposure to participants}. Clearly, exposure to participants does predict participation---indeed, within matched pairs, it predicts an even larger change in participation rates than does communication centrality. Columns (2) and (4) report the estimates: a (within-pair) one-stan\-dard-dev\-iation increase in exposure to participants predicts a \input{../results/effects_main_step_\StepCountInFileNames_sept1_participant_onestd}\unskip-percentage-point increase in protest participation and a \input{../results/effects_main_step_\StepCountInFileNames_petition_participant_onestd}\unskip-percentage-point increase in the probability of signing the petition (compared to \input{../results/effects_main_step_\StepCountInFileNames_sept1_all_onestd}\unskip-percentage-points and  \input{../results/effects_main_step_\StepCountInFileNames_petition_all_onestd}\unskip-percentage-points, respectively, for one-standard-deviation changes in communication centrality).
+
+% Participant Exposure results table
+%------------------------
+
+	\if\jop1
+	\linespread{1}\selectfont
+	\fi
+
+\input{../results/tables/Effects_ParticipantExposure.tex}
+
+	\if\jop1
+	\linespread{2}\selectfont
+	\fi
+
+While these results are consistent with our claims, this is not our preferred specification. First, it is unclear whether the moral authority to sanction is restricted to participants \citep{BanerjeeMicrofinance}; people unable to attend (for health or work reasons, for example) might nevertheless pressure others to participate. Likewise, participants and non-participants alike can provide social approbation as a reward for participating. And moreover, any tendency for participants to preferentially befriend other participants (a form of homophily) would inflate the correlation between exposure to participants and participation rates.
+
+
+%------------------------
+
+
+
+% Survey results
+%--------------------
+
+
+\subsection{Protest vs.\ petition signing: what explains the difference?}\label{sec:survey}
+
+The slopes in Figure \ref{fig:individualdata} and the estimates in Tables \ref{tab:effects} and \ref{tab:participant} reveal that, within matched pairs, people with high communication centrality are more likely to participate than people with low communication centrality. But the relationship is stronger for protest participation than for petition signing. Why?
+
+\emph{Sociability} is almost certainly correlated both with communication centrality and with protest participation. A protest is an inherently social activity, usually attended in the company of friends, and thus protesters might have higher communication centrality than similar non-protesters for reasons unrelated to social sanctioning or, for that matter, to any solution to the collective action problem. In other words, we might observe the same pattern if we were to compare (say) people at a nightclub to observationally similar homebodies, even though clubbing is not subject to the collective action problem.
+
+Petition signing, in contrast, eludes the sociability confound. Like protests, signature drives suffer from the collective action problem: participation is costly, and everyone (participants and non-participants alike) benefits from success. The temptation to free ride on others' petition signatures might be especially strong in Venezuela, where signatories of an earlier petition were fired from government jobs and otherwise discriminated against \citep{Maisanta}. But unlike protesting, petition signing is not a social event.
+
+
+We interpret the difference in slopes between Figure \ref{fig:protest} and \ref{fig:petition} (and the corresponding difference in point estimates in Tables \ref{tab:effects} and \ref{tab:participant}) as evidence that \emph{sociability} drives part of the relationship between protest participation and communication centrality.
+
+This finding would then affect the interpretation of related results in the literature. For example, \citet{EnikopolovVK} find that an online social network increased protest participation in Russia, interpreting this result as evidence that the social network helped ``solve the collective action problem'' by ``reducing the costs of coordination.'' But if the social network also increased attendance at (say) concerts, we might interpret their results instead as evidence that the social network simply facilitated social activities, whether or not those activities were subject to the collective action problem. These two interpretations have different political implications: if the social network helped solve the collective action problem, we might expect that it would also enable other types of  political activities; if it merely facilitates social events, we would not expect that it would affect other, less-social political activities, like voting. And indeed, \citet{EnikopolovVK} find no evidence that the social network increased anti-government votes.
+
+Of course, there are other possible explanations for our finding that communication centrality predicts larger increases in protest participation than in petition signing. For example, protesting might be more \emph{visible}: perhaps people are more likely to know whether their peers protested than to know whether their peers signed a petition. If so, the difference in slopes in Figure \ref{fig:individualdata} could indeed be driven by a difference in the strength of social sanctioning, rather than by the sociability confound.
+
+To evaluate this possibility, we included original questions on an in-person, nationally representative survey of Venezuelans conducted in September, 2018.\footnote{The firm Datan\'{a}lisis included our questions on their regular quarterly survey.} The results suggest that a person's decision to protest is no more or less visible than her decision to sign the petition: the proportion of people who report knowing whether a friend participated is similar for both activities.\footnote{We asked each respondent both about protesting and about petition-signing, randomizing the order of the questions. Results are nearly identical when we restrict the analysis to the question that respondents answered first. Appendix \ref{app:survey} presents the full survey instrument, in English and Spanish.}
+
+Nor is protesting more likely to incur social sanction (or social approbation). In a separate question, we asked whether friends or family members ``told [the respondent] what they thought of [the respondent's] decision'' to attend (or not attend) the protest, or whether ``they kept their opinions to themselves.'' We asked the same question about petition signing. If people were more likely to opine about their friends' protest attendance (or non-attendance) than about their friends' petition signatures (or lack thereof), we might interpret the difference in slopes (Figure \ref{fig:protest} vs.\ Figure \ref{fig:petition}) as evidence simply that social sanctioning is a more common tool for protest mobilization than for petition drives. Instead, our survey data suggest the opposite: more respondents reported hearing others' opinions about their decision to sign (or not sign) the petition (44\%) than about their decision to attend (or not attend) the protest (28\%).
+
+Our petition-signing results thus serve two purposes. First, they suggest that our results on protest activity---and similar results in the literature---may be driven not by the relationship between social networks and collective action \emph{per se}, but rather (or also) by the relationship between social networks and social activities. At the same time, the non-zero relationship between communication centrality and petition signing suggests that sociability is not the whole story. Rather, the fact that communication centrality predicts petition signing at all is consistent with the idea that communication centrality facilitates social sanctioning and thereby discourages free riding.\footnote{One potential caveat is that perhaps \emph{extroversion} drives political participation in general \citep{Gerber:2011dz}, even forms of participation (like petition-signing) that do not occur in large groups. But studies of personality type and participation find that extroversion is correlated only with ``the tendency to engage in those forms of political participation that involve social interaction, especially interaction in large groups, but the influence of extroversion on political participation dissipates when focus turns to more individualistic behaviors'' (\citealt{Mondak:2010to}, 159--160). In our context, petition signing took place over multiple days at hundreds of locations; while it undoubtedly involved more social interaction than (say) putting up a yard sign, it did not typically involve ``interaction in large groups.'' For that reason, extroversion strikes us as an unlikely explanation for the observed relationship between petition signing and communication centrality.}
+
+
+
+
+
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+
+
+%------------------------------------------------------------------------------------------------------------
+% 	Conclusion
+%------------------------------------------------------------------------------------------------------------
+
+\section{Discussion}\label{sec:discussion}
+
+Until recently, it was impossible to observe social networks at scale. That rendered unknowable many facts about the role of social ties in solving collective action problems. In particular, the theoretical prediction that communication centrality---a measure of how quickly others hear about a person---facilitates social sanctioning, and thereby political participation, has gone untested.
+
+In this paper, we use newly available data to study the relationship between  communication centrality and political participation. We map social networks for nearly the entire country of Venezuela using cell-phone meta-data. We then estimate communication centrality and pair it with behavioral measures of two different forms of political participation: protest and petition signing.
+
+Consistent with theory, we find that communication centrality predicts political participation. This is true even within a matched sample of participants and non-participants who live in the same small neighborhood and share the same party registration and gender, among other characteristics. In other words, we are able to compare participants with non-participants who appear similar across more observables than have been used in past work. Moreover, these participants and matched non-participants engage in placebo activities that should be associated with socio-economic status---but that are not subject to the collective action problem---at nearly identical rates. And again, even within these matched pairs, communication centrality strongly predicts political participation.
+
+Together with qualitative information and original survey data, we argue that communication centrality and political participation are connected through social sanctioning. Specifically, we rule out alternative explanations like the possibility that communication centrality simply facilitates \emph{awareness} of political activities. We threfore argue not only that ``networks matter'' for political participation, but specifically that they facilitate social sanctioning (and social approbation) as a solution to the collective action problem. While some aspects of the Venezuelan case are unusual---for example, few protests are as large as the one studied in this paper---we nevertheless expect that social sanctioning facilitates collective action elsewhere, too.
+
+Our results also imply a word of caution about the study of social networks and collective action more generally. Much of the empirical work on this subject has focused on protests, for the good reason that they are politically important, and for the convenient reason that cell-phone location allows researchers to observe participation \citep{SteinertThrelkeld:2017dy,Larson:2016vk,EnikopolovVK}. But in comparing protest to another political activity---petition signing---we find that network position may be correlated with protest activity for reasons that have nothing to do with collective action, coordination, awareness, or other reasons commonly cited in the literature. Protest is an inherently social activity, more like attending a street fair than like casting a ballot. Extroversion or sociability may therefore drive correlations between protest and a person's place in the social network. Studying more solitary political activities strikes as as a worthy goal for future work.
+
+
+
+
+
+
+
+
+
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+
+
+%------------------------------------------------------------------------------------------------------------
+% 	Works Cited
+%------------------------------------------------------------------------------------------------------------
+
+\if\jop0
+\pagebreak
+\newpage
+\fi
+
+\bibliographystyle{apa}
+\bibliography{./nick_bib_file.bib,./dorothy_bib_file.bib}
+\pagebreak
+
+
+
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+
+
+%------------------------------------------------------------------------------------------------------------
+% 	Appendices
+%------------------------------------------------------------------------------------------------------------
+
+
+\if\jop1
+\linespread{1}\selectfont
+\fi
+
+\if\jop1
+\newpage
+
+\vspace*{2cm}
+\begin{center}
+\Huge Friends Don't Let Friends Free Ride \\[.1cm]
+\large Online Supplemental Information
+\end{center}
+\setcounter{page}{1}
+
+\fi
+
+\newpage
+
+\appendix
+
+\part{Online Supplemental Information}
+
+\noptcrule
+
+\parttoc[n]
+
+\renewcommand\thefigure{\thesection.\arabic{figure}}
+
+\renewcommand\thetable{\thesection.\arabic{figure}}
+
+
+\newpage
+
+
+
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+
+
+%------------------------------------------------------------------------------------------------------------
+% 	Network specification
+%------------------------------------------------------------------------------------------------------------
+
+
+
+\section{Network Specification}\label{appendix_thresholding}
+
+
+\subsection{Motivation for Unweighted Network Specification}
+
+Two considerations motivated our decision not to use the frequency or duration of calls as weights, as other studies have done \citep{Onnela:2007eka,Miritello:2013bl}.
+
+First, it is unclear whether frequency of communication is a good indicator of influence in a relationship. Within a given type of relationship (e.g. among co-workers), there is some evidence that frequency of communication in one electronic medium is a useful proxy for intensity of communication across all mediums \citep{Haythornthwaite:2005bi}, but whether this holds across types of relationships is unknown.\footnote{Indeed, \cite[p. 125]{Haythornthwaite:2005bi} concludes only ``that media use \emph{within groups} conformed to a unidimensional scale.'' (Emphasis added.)}
+
+For example, people may make more calls to co-workers and business partners than to family members---even if the family relationships are more influential. For example, using data from California, \cite{Motahari:2012tr} shows that calling patterns among family members are qualitatively different from calling patterns with others: calls to family members are more frequent but shorter. These findings illustrate how the mapping from call frequency or duration to significance-of-tie may vary across types of connections. Similarly, in a survey of 40 U.S. individuals who agreed to share phone records and fill out questionnaires about their connections, \cite{Wiese:2015bd} finds that while call frequency and duration do predict self-reported tie strength, ``many people in all tie strength levels had very little communication'' \citep[5]{Wiese:2015bd}.  Wiese concludes that this is driven by substitution to in-person communication, substitution to email or other non-phone communication, and the fact that ``[f]amily is close regardless of communication'' (7).
+
+Second, in the Venezuelan context we know that a non-trival share of communications take place via WhatsApp, and thus do not appear in our data. As these communications are especially likely among younger users, using text and phone frequency as a measure of importance of connections would necessarily privilege connections among older people, potentially biasing results. Indeed, fear of excluding ties among younger users is one reason that we use such a low threshold for connection inclusion.
+
+
+\subsection{Motivation for Undirected Network Specification}
+
+
+We treat connections as undirected because, first, information exchange in phone communications is inherently bi-directional. Second, and perhaps more importantly, the direction of a call can be surprisingly difficult to establish in the Venezuelan context. In Venezuela, the cost is borne by the person placing the call. As a result, many users engage in the practice of giving more affluent contacts a ``missed call'' (they call, let the phone ring once, then hang up) as a signal that they would like the more affluent contact to call them back, allowing the more affluent party to be billed. These missed calls do not appear in the data (call detail records are collected primarily for billing purposes, and missed calls aren't billed), so many bi-directional relationships may appear uni-directional in the data.
+
+
+
+
+
+
+
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+
+
+%------------------------------------------------------------------------------------------------------------
+% 	Matching appendix
+%------------------------------------------------------------------------------------------------------------
+
+
+
+\section{Matching Strategy}\label{appendix_matching}
+
+For each protester $p$, we locate an observationally similar match $m$ using the following recursive matching algorithm:
+\begin{enumerate}
+    \item First, we create a set of potential matches including all individuals who subscribe to our Partner Telecom\footnote{Recall that all identified protestors are also Partner Telecom subscribers, because real-time geo-location is only available for Partner Telecom subscribers.} and are registered to vote as the same polling place as $p$.
+    \item The algorithm looks for individuals who are perfect (exact) matches for $p$ in terms of:
+    \begin{itemize}
+        \item[-] political party (registered member of the PSUV, or not, \texttt{PSUV}
+        \item[-] whether they spent any weekdays in Caracas in the month preceding or following the protest (excluding the week of the protest) (binary, \texttt{any\_weekday\_in\_caracas})
+        \item[-] whether they spent any weekends in Caracas in the month preceding or following the protest (excluding the week of the protest) (binary, \texttt{any\_weekend\_in\_caracas})
+        \item[-] exact number of weekdays in Caracas in the month preceding or following the protest (excluding the week of the protest, \texttt{in\_caracas\_weekday})
+        \item[-] exact number of weekend days in Caracas in the month preceding or following the protest (excluding the week of the protest, \texttt{in\_caracas\_weekend})
+        \item[-] gender (binary, from voter registration data, \texttt{registration\_female})
+        \item[-] whether the user has a pre-paid or post-paid cellular plan (related to socio-economic status) (\texttt{post})
+    \end{itemize}
+    \item If there is at least one person who is a perfect match for $p$ along these dimensions (which happens in $\sim70\%$ of cases), then a distance score is calculated with respect to normalized measures of age and spatial mobility,\footnote{The day-to-day variance in the location of the user.} and the individual with the lowest distance score becomes $m$.
+    \item If no individuals are identified who perfectly match $p$ along the exact-match attributes, then the bottom-most attribute is moved from the list of attributes for which an exact-match is sought and is moved into the list of attributes for which a distance score is calculated. Steps 2 and 3 are then repeated until a single match is identified.
+\end{enumerate}
+
+Success rates for various exact-match attributes can be found in Tables~\ref{appendix_table_exactsept1}-~\ref{appendix_table_exactMUD}.
+
+\begin{table}
+    \centering
+    \caption{Successful Matches on Exact-Match Attributes, Sept 1st}\label{appendix_table_exactsept1}
+    \input{../results_nonpublicsource/matching_diagnostics/exactmatchcounts_sept1_n5000.tex}
+\end{table}
+
+\begin{table}
+    \centering
+    \caption{Successful Matches on Exact-Match Attributes, PSUV}\label{appendix_table_exactPSUV}
+    \input{../results_nonpublicsource/matching_diagnostics/exactmatchcounts_PSUV_n5000.tex}
+\end{table}
+
+\begin{table}
+    \centering
+    \caption{Successful Matches on Exact-Match Attributes, MUD}\label{appendix_table_exactMUD}
+    \input{../results_nonpublicsource/matching_diagnostics/exactmatchcounts_MUD_n5000.tex}
+\end{table}
+
+
+
+
+
+
+
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+
+
+%------------------------------------------------------------------------------------------------------------
+% 	Tables and figures
+%------------------------------------------------------------------------------------------------------------
+
+\section{Additional tables and figures}\label{appendix_extras}
+
+
+\subsection{Descriptives}\label{sec:descriptivegraphs}
+
+
+
+	% FIGURE: Descriptives
+	%-------------------------------
+
+	\if\jop1
+	\linespread{1}\selectfont
+	\fi
+
+	\begin{figure}[h!] \RawFloats
+	\centering
+	\caption{\specialcell{Communication centrality predicts participation in the population} \\[-1.75em]}\label{fig:descriptives}
+	\caption*{\small{\emph{These figures describe the relationships between communication centrality and (a) neighborhood (census-tract) poverty, (b) neighborhood (census-tract) education, (c) protest participation, and (d) petition-signing, all using a representative sample of the population of six large Venezuelan states.}} \\[-1.5em]}
+       %
+       %
+	\begin{subfigure}[t]{0.29\textwidth}
+	\caption{\footnotesize{\specialcell{Distribution of  \\ Comm.\ Centrality}}}\label{fig:descriptivesA}
+	\includegraphics[width=1.1\textwidth, trim=0cm 0cm 0cm .8cm, clip=true]{../results/descriptives/Density_step_\StepCountInFileNames.pdf} \\[-1.1em]
+	\end{subfigure} %
+       %
+       %
+        ~  \hspace{0cm}
+	\begin{subfigure}[t]{0.29\textwidth}
+	\caption{\footnotesize{\specialcell{Weakly correlated \\ with poverty}} }\label{fig:descriptivesB}
+	\includegraphics[width=1.1\textwidth, trim=0cm 0cm 0cm .8cm, clip=true]{../results/descriptives/step_\StepCountInFileNames_v_piso_cemento.pdf} \\[-1.1em]
+         \end{subfigure}
+	%
+	%
+        ~  \hspace{0cm}
+	\begin{subfigure}[t]{0.29\textwidth}
+	\caption{\footnotesize{\specialcell{Weakly correlated \\ with education}} }\label{fig:descriptivesC}
+	\includegraphics[width=1.1\textwidth, trim=0cm 0cm 0cm .8cm, clip=true]{../results/descriptives/step_\StepCountInFileNames_v_bachilleres.pdf} \\[-1.1em]
+         \end{subfigure} \\[0.8em]
+       %
+       %
+	\begin{subfigure}[t]{0.29\textwidth}
+	\caption{\footnotesize{\specialcell{Distribution of log \\ Comm.\ centrality}}}\label{fig:descriptivesD}
+	\includegraphics[width=1.1\textwidth, trim=0cm 0cm 0cm .7cm, clip=true]{../results/descriptives/Density_ln_step_\StepCountInFileNames.pdf} \\[-1.1em]
+	\end{subfigure} %
+       %
+       %
+        ~  \hspace{0cm}
+	\begin{subfigure}[t]{0.29\textwidth}
+	\caption{\footnotesize{\specialcell{Comm.\ centrality \\ predicts protest}} }\label{fig:descriptivesE}
+	\includegraphics[width=1.1\textwidth, trim=0cm 0cm 0cm .7cm, clip=true]{../results/descriptives/protest_v_ln_step_\StepCountInFileNames.pdf} \\[-1.1em]
+         \end{subfigure}
+	%
+	%
+        ~  \hspace{0cm}
+	\begin{subfigure}[t]{0.29\textwidth}
+	\caption{\footnotesize{\specialcell{Comm\ centrality \\ predicts signing}} }\label{fig:descriptivesF}
+	\includegraphics[width=1.1\textwidth, trim=0cm 0cm 0cm .7cm, clip=true]{../results/descriptives/petition_v_ln_step_\StepCountInFileNames.pdf} \\[-1.1em]
+         \end{subfigure}
+         %
+         %
+\end{figure}
+
+	\if\jop1
+	\linespread{2}\selectfont
+	\fi
+
+	%---------------------------
+
+
+Figures \ref{fig:descriptivesB} and \ref{fig:descriptivesC} reveal that communication centrality is only weakly correlated with neighborhood socioeconomic characteristics. In particular, it is only weakly correlated with the proportion of households in the neighborhood that have a cement floor. This captures whether a neighborhood has formal or informal housing, or whether the neighborhood is a \emph{barrio} (in Venezuelan terms); the distribution of the proportion is bimodal, with modes close to zero and close to 0.8.\footnote{By ``neighborhood,'' we mean the census tract in which a person's polling place is located.} It is also only weakly correlated with the proportion of adults (over 25) in the neighborhood who have a college degree. (Note that the scales of the y-axes in these figures span the first 90 percent of the distribution of communication centrality).
+
+In contrast, Figures \ref{fig:descriptivesE} and \ref{fig:descriptivesF} reveal that communication centrality is strongly correlated with both protest participation and petition signing.
+
+
+
+	% FIGURE: Within-pair differences in communication centrality
+	%------------------------------------------------------------------------
+
+	\if\jop1
+	\linespread{1}\selectfont
+	\fi
+
+	\begin{figure}[h!] \RawFloats
+	\centering
+	\caption{\specialcell{Participants have higher communication centrality \\ than their observationally similar counterparts \\[-.5em]}}\label{fig:within_pair_difs}
+	\caption*{\small{\emph{Each figure plots the distribution of deviations from the within-pair mean of communication centrality ($N_{i,\StepCountInText}^g-\overline{N_{pair,\StepCountInText}^g}$), separately for participants and matched non-participants.}} \\[-1.5em]} %For visual clarity exclude top 1\% ... make this and previous line a footnote
+       %
+       %
+	\begin{subfigure}[t]{0.45\textwidth}
+	\caption{\footnotesize{\specialcell{Protest (September 1) \\[-.25em] \scriptsize{Overall mean of $N_{i,\StepCountInText}^g \approx \input{../results/exposure_densities/undifferenced_avg_sept1_all.tex}$}}} }\label{fig:sept1_dist}
+	\hspace{-1.25cm} \rotatebox{90}{\hspace{1.9cm}  \footnotesize{\textsf{Density}}}
+	\includegraphics[width=1.1\textwidth, trim=1.1cm .25cm 0cm .7cm, clip=true]{../results/exposure_densities/Deviations_step_\StepCountInFileNames_sept1_all.pdf} \\[-1.1em]
+	\caption*{\footnotesize{\specialcell{\textsf{Deviation from within-pair mean of} \\[-.25em] \textsf{communication centrality at $t=\StepCountInText$}}}}%
+	\end{subfigure} %
+       %
+       %
+        ~  \hspace{0cm}
+	\begin{subfigure}[t]{0.45\textwidth}
+	\caption{\footnotesize{\specialcell{Petition signing \\[-.25em] \scriptsize{Overall mean of $N_{i,\StepCountInText}^g \approx \input{../results/exposure_densities/undifferenced_avg_petition_all.tex}$}}} }\label{fig:sept1_difs}
+	\includegraphics[width=1.1\textwidth, trim=1.1cm .25cm 0cm .7cm, clip=true]{../results/exposure_densities/Deviations_step_\StepCountInFileNames_petition_all.pdf} \\[-1.1em]
+	\caption*{$\qquad$ \footnotesize{\specialcell{\textsf{Deviation from within-pair mean of} \\[-.25em] \textsf{communication centrality at $t=\StepCountInText$}}}}%
+         \end{subfigure} \\[-.5em]
+	%
+	%
+        \caption*{\scriptsize{For visual clarity, both figures exclude observations in the top and bottom 1\% of the distribution of within-pair differences in communication centrality. We do not trim the sample when estimating Equation \ref{eq:neweqn} below.} \\[-1.6em]}
+\end{figure}
+
+\if\jop1
+\linespread{2}\selectfont
+\fi
+
+	%---------------------------
+
+Figure \ref{fig:within_pair_difs} plots the distribution of deviations from the within-pair means of communication centrality, i.e., the distribution of $N_{i}^g-\overline{N_{pair}^g}$. A person with a value of $1.5$, for example, is exposed to three more people than her matched counterpart. These plots reveal that participants have higher communication centrality than their observationally similar counterparts.
+
+
+
+\subsection{Correlation between communication centrality and eigenvector centrality}
+
+	% Correlations
+	%-----------------
+
+ 	\input{../results/tables/Correlations_EC.tex}
+
+	%-----------------
+
+
+
+
+
+
+
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+				% % % % % % % % % % % % % %
+
+
+%------------------------------------------------------------------------------------------------------------
+% 	Survey instrument
+%------------------------------------------------------------------------------------------------------------
+
+\newpage
+
+\section{Survey instrument}\label{app:survey}
+
+\singlespacing
+
+The order of the two blocks was randomly assigned across respondents.
+
+ \setlength\itemsep{-0.5em}
+\small
+\subsection{Block 1, English}
+
+\begin{enumerate}
+\item In 2016, opposition parties collected signatures on a petition requesting a recall referendum. Hundreds of thousands of people signed the petition, but millions chose not to sign, and many others wanted to sign but just didn't have time or energy. Did you happen to sign the 2016 recall referendum petition?
+\item Did any of your friends or family members tell you what they thought of your decision [to sign the petition] [not to sign the petition], or did they keep their opinions to themselves? [Read responses]
+\begin{itemize}
+\item They told me what they thought
+\item They kept their opinions to themselves
+\item No response
+\end{itemize}
+\item We're interested in whether people talked to their friends about whether to sign the recall referendum petition in 2016, or whether they kept their decisions to themselves. Think for a minute of your three closest friends. I will not ask you whether or not they signed the recall referendum petition, but I'm curious whether you know one way or the other. [Read responses]
+\begin{itemize}
+\item Thinking of the first of the three friends you have in mind, do you know whether he or she signed? [Read responses]
+\begin{itemize}
+\item Yes, I know whether or not he or she signed the petition
+\item No, I don't know
+\item No response
+\end{itemize}
+\end{itemize}
+\begin{itemize}
+\item And now thinking of the second of the three friends you have in mind, do you know whether he or she signed?
+\begin{itemize}
+\item Yes, I know whether or not he or she signed the petition
+\item No, I don't know
+\item No response
+\end{itemize}
+\end{itemize}
+\begin{itemize}
+\item And now thinking of the third of the three friends you have in mind, do you know whether he or she signed?
+\begin{itemize}
+\item Yes, I know whether or not he or she signed the petition
+\item No, I don't know
+\item No response
+\end{itemize}
+\end{itemize}
+\end{enumerate}
+
+\subsection{Block 2, English}
+\begin{enumerate}
+\item In 2016, opposition parties organized protests to pressure the government to hold a recall referendum. Hundreds of thousands of people attended, but millions chose not to attend, and many others wanted to attend but just didn't have time or energy. Did you happen to attend the recall referendum protests in 2016, such as the Toma de Caracas?
+\item Did any of your friends or family members tell you what they thought of your decision [to attend the protest] [not to attend the protest], or did they keep their opinions to themselves? [Read responses]
+\begin{itemize}
+\item They told me what they thought
+\item They kept their opinions to themselves
+\item No response
+\end{itemize}
+\item We're interested in whether people talked to their friends about whether to attend the recall referendum protests in 2016, or whether they kept their decisions to themselves. Think for a minute of your three closest friends. I will not ask you whether or not they attended the protests in 2016, but I'm curious whether you know one way or the other. [Read responses]
+\begin{itemize}
+\item Thinking of the first of the three friends you have in mind, do you know whether he or she protested? [Read responses]
+\begin{itemize}
+\item Yes, I know whether or not he or she protested
+\item No, I don't know
+\item No response
+\end{itemize}
+\end{itemize}
+\begin{itemize}
+\item And now thinking of the second of the three friends you have in mind, do you know whether he or she protested?
+\begin{itemize}
+\item Yes, I know whether or not he or she sprotested
+\item No, I don't know
+\item No response
+\end{itemize}
+\end{itemize}
+\begin{itemize}
+\item And now thinking of the third of the three friends you have in mind, do you know whether he or she protested?
+\begin{itemize}
+\item Yes, I know whether or not he or she protested
+\item No, I don't know
+\item No response
+\end{itemize}
+\end{itemize}
+\end{enumerate}
+
+\subsection{Block 1, Spanish}
+
+\begin{enumerate}
+\item En 2016 los partidos de oposici\'{o}n recogieron firmas para solicitar un refer\'{e}ndum revocatorio. >Firm\'{o} usted la petici\'{o}n del refer\'{e}ndum revocatorio de 2016?
+\begin{itemize}
+\item S\'{i}
+\item No
+\item No contesta
+\end{itemize}
+\item >Alguno de sus amigos o familiares le dijeron qu\'{e} pensaban sobre su decisi\'{o}n [de firmar la petic\'{o}n] [no firmar la petici\'{o}n], o fueron reservados con respecto a sus opiniones? (Enc. Leer opciones. Aceptar una sola respuesta)
+\begin{itemize}
+\item Me dijeron lo que pensaban
+\item Fueron reservados con respeto a sus opiniones
+\item No contesta
+\end{itemize}
+\item Nos interesa saber si las personas hablaron con sus amigos sobre la firma de la petici\'{o}n para el refer\'{e}ndum revocatorio en 2016. Piense por un minuto en sus tres amigos m\'{a}s cercanos, recuerde que no queremos saber qu\'{e} hicieron sus amigos, nos interesa saber si ellos compartieron con usted la decis\'{o}n que tomaron.
+\begin{itemize}
+\item Pensando en el primero de los tres amigos que tiene en mente, >sabe si firm\'{o}? (Enc. Leer opciones. Aceptar una sola respuesta)
+\begin{itemize}
+\item S\'{i}, s\'{e} si firm\'{o} o no la petici\'{o}n
+\item No, no lo s\'{e}
+\item No contesta
+\end{itemize}
+\end{itemize}
+\begin{itemize}
+\item Y ahora, pensando en el segundo de los tres amigos que tiene en mente, >sabe si firm\'{o}? (Enc. Leer opciones. Aceptar una sola respuesta)
+\begin{itemize}
+\item S\'{i}, s\'{e} si firm\'{o} o no la petici\'{o}n
+\item No, no lo s\'{e}
+\item No contesta
+\end{itemize}
+\end{itemize}
+\begin{itemize}
+\item Y ahora, pensando en el tercero de los tres amigos que tiene en mente, >sabe si firm\'{o}? (Enc. Leer opciones. Aceptar una sola respuesta)
+\begin{itemize}
+\item S\'{i}, s\'{e} si firm\'{o} o no la petici\'{o}n
+\item No, no lo s\'{e}
+\item No contesta
+\end{itemize}
+\end{itemize}
+\end{enumerate}
+
+\subsection{Block 2, Spanish}
+\begin{enumerate}
+\item En 2016 los partidos de oposici\'{o}n organizaron protestas para presionar al gobierno a celebrar un refer\'{e}ndum revocatorio. >Asisti\'{o} usted a las protestas a favor del refer\'{e}ndum revocatorio en 2016, como la denominada Toma de Caracas?
+\begin{itemize}
+\item S\'{i}
+\item No
+\item No contesta
+\end{itemize}
+\item >Alguno de sus amigos o familiares le dijeron qu\'{e} pensaban sobre su decisi\'{o}n [de asisir a la protesta] [no asistir a la protesta], o fueron reservados con respecto a sus opiniones? (Enc. Leer opciones. Aceptar una sola respuesta)
+\begin{itemize}
+\item Me dijeron lo que pensaban
+\item Fueron reservados con respeto a sus opiniones
+\item No contesta
+\end{itemize}
+\item Nos interesa saber si las personas hablaron con sus amigos sobre si asistir\'{i}an o no a las protestas refer\'{e}ndum revocatorio en 2016. Piense por un minuto en sus tres amigos m\'{a}s cercanos, recuerde que no queremos saber qu\'{e} hicieron sus amigos, nos interesa saber si ellos compartieron con usted la decis\'{o}n que tomaron.
+\begin{itemize}
+\item Pensando en el primero de los tres amigos que tiene en mente, >sabe si protest\'{o}? (Enc. Leer opciones. Aceptar una sola respuesta)
+\begin{itemize}
+\item S\'{i}, s\'{e} si protest\'{o} o no
+\item No, no lo s\'{e}
+\item No contesta
+\end{itemize}
+\end{itemize}
+\begin{itemize}
+\item Y ahora, pensando en el segundo de los tres amigos que tiene en mente, >sabe si protest\'{o}? (Enc. Leer opciones. Aceptar una sola respuesta)
+\begin{itemize}
+\item S\'{i}, s\'{e} si protest\'{o} o no
+\item No, no lo s\'{e}
+\item No contesta
+\end{itemize}
+\end{itemize}
+\begin{itemize}
+\item Y ahora, pensando en el tercero de los tres amigos que tiene en mente, >sabe si protest\'{o}? (Enc. Leer opciones. Aceptar una sola respuesta)
+\begin{itemize}
+\item S\'{i}, s\'{e} si protest\'{o} o no
+\item No, no lo s\'{e}
+\item No contesta
+\end{itemize}
+\end{itemize}
+\end{enumerate}
+
+\end{document}
+
+
+
+
+
+\end{document}
